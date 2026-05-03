@@ -2,19 +2,18 @@ import json
 import os
 import sys
 import logging
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))   # Adicionar o diretório src ao path
-
 from flask import Blueprint, jsonify, request
 from faker import Faker
 from app.model.cliente import Cliente
 from app.utils.data_utils import ler_dados, salvar_dados
 
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))   # Adicionar o diretório src ao path
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 clientes_bp = Blueprint('clientes', __name__, url_prefix='/api')
-fake = Faker('pt_BR')                                                             # Incializar Faker com dados pt-BR
+fake = Faker('pt_BR')   # Incializar Faker com dados pt-BR
 
 
 @clientes_bp.route('/clientes', methods=['GET'])
@@ -162,6 +161,7 @@ def deletar_cliente(cliente_id):
       404:
         description: Cliente não encontrado
     """
+
     clientes = ler_dados()
     for i, cliente in enumerate(clientes):
         if cliente.id == cliente_id:
@@ -171,6 +171,7 @@ def deletar_cliente(cliente_id):
             return jsonify({"mensagem": "Cliente deletado com sucesso", "cliente": removido.to_dict()}), 200
     
     logger.warning(f"Cliente {cliente_id} não encontrado para deleção")
+
     return jsonify({"erro": "Cliente não encontrado"}), 404
 
 
@@ -190,6 +191,7 @@ def seed_clientes(quantidade: int):
       400:
         description: Quantidade inválida
     """
+    
     if quantidade <= 0 or quantidade > 1000:
         logger.warning(f"Tentativa de seed com quantidade inválida: {quantidade}")
         return jsonify({"erro": "Quantidade deve estar entre 1 e 1000"}), 400

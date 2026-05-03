@@ -51,6 +51,7 @@ def gerar_clientes_fake(quantidade=10):
 
 def limpar_dados():
     """Limpa todos os dados"""
+    
     if os.path.exists(DATA_FILE):
         os.remove(DATA_FILE)
         print("🗑️  Dados removidos com sucesso!")
